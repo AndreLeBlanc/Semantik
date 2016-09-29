@@ -1,5 +1,81 @@
-\documentclass{article}
+\documentclass[10pt]{article}
+\setlength\parindent{62pt}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{multirow,bigdelim}
+\setlength\parindent{0pt}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb, graphicx, multicol, array}
+
+\usepackage{ textcomp }
+
 \begin{document}
-(Type your content here.)
+
+\title{Assignment 7}
+\author{André Le Blanc\\
+Semantics of Programming Languages 2016}
+\maketitle
+\large
+
+\section*{Problem 1:}
+
+Modify the abstract syntax so procedures have one argument (with the usual syntax – the argument enclosed in parentheses following the procedure name).
+
+\section*{Solution 1:}
+
+$D_p :: \text{ proc p(x) is S; D}_p; \  | \ \epsilon$
+
+\section*{Problem 2:}
+
+Extend the procedure environment (on page 57) to keep track of not only the body of each procedure, but also the name of the argument of that procedure.
+
+\section*{Solution:}
+
+$\text{Env}_p = \text{Pname} \hookrightarrow \text{ Stm x  Var} $
+
+
+\section*{Problem 3:}
+
+Modify the function updP (on page 58) so that it correctly inserts the name of the procedure's formal argument into the environment.
+
+\section*{Solution:}
+
+$\text{upd}_p \text{ (proc } p(x) \text{ is S; D}_p \text{, env}_p) = \text{ upd}_p (D_p, \text{env}_p [p(x) \rightarrow S])$
+
+\section*{Problem 4:}
+
+Modify the rule for call$^{\text{rec}}_{\text{ns}}$ to pass the argument. Use call-by-value semantics – i.e. pass the value of the argument expression.
+
+\section*{Solution:}
+
+call$^{\text{rec}}_{\text{ns}} \ \cfrac{\text{env}_p, \vdash \langle S, s \rangle \rightarrow s'}{\text{env}_p, \langle \text{call } p(x), s \rangle \rightarrow s'}$ where env\textsubscript{p} p(x) = S
+
+\section*{Problem 5:}
+
+Compute the final state of this program using your new rules and 
+
+definitions:
+
+begin
+
+\hspace{0.5cm} proc inc(x) is c := c + x;
+
+\hspace{0.5cm} call inc(2*4)
+
+end
+
+when executed in a state s where s(c) = 3.
+
+\section*{Solution:}
+
+
+$\dfrac{\langle \epsilon, s[c \rightarrow \mathcal{A} \text{\textlbrackdbl}  3 \text{\textrbrackdbl}] \rangle \rightarrow_D s' \
+\hspace{2cm } \dfrac{\text{env}_1 \vdash \langle c:= c + x, s'' \rangle \rightarrow s'''}
+{\text{env}_1 \vdash \langle \text{ call  inc}(x), s' \rangle \rightarrow s'''}}
+{[\text{block\textsubscript{ns}}]
+\dfrac{\langle \text{ var } c = 3;, s \rangle \rightarrow_D s' \ \text{udp}_p(\text{ proc } p(x) \text{ is S;, } \emptyset) \ \vdash \langle \text{ begin ... end, s'} \rangle \rightarrow s'''}
+{\emptyset \vdash \langle \text{ begin var c = 3; proc inc(x) is } c:= c+x; \text{ begin ... end}, s \rangle \rightarrow s_e}}$
+
+
 \end{document}
